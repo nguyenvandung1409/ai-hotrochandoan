@@ -1,0 +1,2391 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống chẩn đoán Y học tích hợp Đông - Tây y</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a5c36;
+            --primary-light: #1a7d4e;
+            --secondary: #d4af37;
+            --accent: #8b4513;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #6c757d;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #3498db;
+            --modern-blue: #1e6ea7;
+            --modern-light: #e3f2fd;
+            --shadow: 0 5px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(10, 92, 54, 0.85), rgba(10, 92, 54, 0.9)), url('https://images.unsplash.com/photo-1584467735871-8db9ac8d0e92?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background-color: #e6c12e;
+            transform: translateY(-3px);
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-modern {
+            background-color: var(--modern-blue);
+            color: white;
+        }
+
+        .btn-modern:hover {
+            background-color: #155d8c;
+        }
+
+        .btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Diagnosis Section */
+        .diagnosis {
+            padding: 5rem 0;
+            background-color: #f0f7f4;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .diagnosis-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .diagnosis-form {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(10, 92, 54, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .symptoms-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .symptom-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .diagnosis-result {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 100px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-header h3 {
+            color: var(--primary);
+        }
+
+        .confidence {
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .diagnosis-condition {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .treatment-list {
+            list-style: none;
+        }
+
+        .treatment-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .treatment-list li:last-child {
+            border-bottom: none;
+        }
+
+        .treatment-list i {
+            color: var(--success);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tongue Analysis */
+        .tongue-analysis {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .tongue-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .tongue-section h4 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tongue-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .tongue-option {
+            text-align: center;
+            padding: 1rem 0.5rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tongue-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tongue-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(10, 92, 54, 0.1);
+        }
+
+        .tongue-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Pulse Analysis */
+        .pulse-advanced {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .pulse-position {
+            margin-bottom: 1.5rem;
+        }
+        
+        .pulse-position h5 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+        
+        .pulse-positions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .pulse-position-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .pulse-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .pulse-type-option {
+            text-align: center;
+            padding: 1rem 0.5rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pulse-type-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .pulse-type-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(10, 92, 54, 0.1);
+        }
+        
+        .pulse-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .pulse-description {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid var(--secondary);
+            display: none;
+        }
+        
+        .pulse-description.active {
+            display: block;
+        }
+
+        /* Modern Medicine Section */
+        .modern-medicine-section {
+            background: var(--modern-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--modern-blue);
+        }
+
+        .modern-medicine-section h4 {
+            color: var(--modern-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lab-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .lab-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .lab-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .lab-item input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Result Tabs */
+        .result-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .result-tab.active {
+            border-bottom-color: var(--modern-blue);
+            color: var(--modern-blue);
+            font-weight: 600;
+        }
+
+        .result-tab.traditional.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .result-content {
+            display: none;
+        }
+
+        .result-content.active {
+            display: block;
+        }
+
+        .modern-result {
+            background: var(--modern-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .modern-result h4 {
+            color: var(--modern-blue);
+            margin-bottom: 1rem;
+        }
+
+        /* Detailed Analysis */
+        .detailed-analysis {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .analysis-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .analysis-section h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .analysis-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .analysis-item h5 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .analysis-item p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Symptom Search */
+        .symptom-search {
+            margin-bottom: 1rem;
+        }
+
+        .symptom-search input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Snow Effect */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Tab Improvements */
+        .tab-content {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .diagnosis-container, .tongue-analysis {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero {
+                padding: 4rem 0;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .tabs, .result-tabs {
+                flex-direction: column;
+            }
+            
+            .tab, .result-tab {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Snow Effect -->
+    <div class="snow-container" id="snowContainer"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-yin-yang"></i>
+                    <h1>AI Y HỌC THÔNG MINH</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Trang chủ</a></li>
+                        <li><a href="#diagnosis">Chẩn đoán</a></li>                        
+                    </ul>
+                </nav>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Hệ thống chẩn đoán Y học kết hợp Đông - Tây y</h2>
+            <br><br>
+            <p>Phân tích toàn diện triệu chứng lâm sàng, chỉ số cận lâm sàng để đưa ra chẩn đoán và phác đồ điều trị từ cả hai góc độ Y học hiện đại và Y học cổ truyền</p>
+            <br><br>
+            <a href="#diagnosis" class="btn btn-large">Bắt đầu chẩn đoán</a>
+        </div>
+    </section>
+
+    <!-- Diagnosis Section -->
+    <section class="diagnosis" id="diagnosis">
+        <div class="container">
+            <div class="section-title">
+                <h2>Chẩn đoán toàn diện</h2>
+                <h3>Phân tích triệu chứng, hình ảnh lưỡi, mạch và chỉ số cận lâm sàng</h3>
+            </div>
+            <div class="diagnosis-container">
+                <div class="diagnosis-form">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="symptoms">Triệu chứng</div>
+                        <div class="tab" data-tab="tongue">Lưỡi</div>
+                        <div class="tab" data-tab="pulse">Mạch</div>
+                        <div class="tab" data-tab="modern">CLS</div>
+                        <div class="tab" data-tab="history">Tiền sử</div>
+                    </div>
+                    
+                    <form id="diagnosisForm">
+                        <!-- Symptoms Tab -->
+                        <div class="tab-content active" id="symptoms-tab">
+                            <div class="form-group">
+                                <label for="symptoms">Mô tả triệu chứng chi tiết</label>
+                                <textarea id="symptoms" class="form-control" placeholder="Mô tả chi tiết các triệu chứng, thời gian xuất hiện, tính chất, yếu tố làm nặng/giảm..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Tìm kiếm triệu chứng</label>
+                                <div class="symptom-search">
+                                    <input type="text" id="symptomSearch" placeholder="Tìm kiếm triệu chứng...">
+                                </div>
+                                <label>Chọn triệu chứng cụ thể</label>
+                                <div class="symptoms-selector" id="symptomsContainer">
+                                    <!-- Symptoms will be dynamically loaded -->
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="symptomDuration">Thời gian triệu chứng</label>
+                                <select id="symptomDuration" class="form-control">
+                                    <option value="">Chọn thời gian</option>
+                                    <option value="1">Dưới 3 ngày (Cấp tính)</option>
+                                    <option value="2">3-7 ngày (Bán cấp)</option>
+                                    <option value="3">1-4 tuần</option>
+                                    <option value="4">Trên 4 tuần (Mãn tính)</option>
+                                    <option value="5">Trên 3 tháng (Mãn tính kéo dài)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Tongue Tab -->
+                        <div class="tab-content" id="tongue-tab">
+                            <div class="tongue-analysis">
+                                <div class="tongue-section">
+                                    <h4><i class="fas fa-tint"></i> Chất lưỡi</h4>
+                                    <div class="tongue-options">
+                                        <div class="tongue-option" data-type="substance" data-value="pale">
+                                            <div class="tongue-icon"><i class="fas fa-square" style="color: #f5f5dc;"></i></div>
+                                            <div>Nhạt</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="substance" data-value="red">
+                                            <div class="tongue-icon"><i class="fas fa-square" style="color: #e74c3c;"></i></div>
+                                            <div>Đỏ</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="substance" data-value="deep-red">
+                                            <div class="tongue-icon"><i class="fas fa-square" style="color: #c0392b;"></i></div>
+                                            <div>Đỏ sẫm</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="substance" data-value="purple">
+                                            <div class="tongue-icon"><i class="fas fa-square" style="color: #8e44ad;"></i></div>
+                                            <div>Tím</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="substance" data-value="pale-purple">
+                                            <div class="tongue-icon"><i class="fas fa-square" style="color: #a569bd;"></i></div>
+                                            <div>Tím nhạt</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="substance" data-value="blue">
+                                            <div class="tongue-icon"><i class="fas fa-square" style="color: #3498db;"></i></div>
+                                            <div>Xanh</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="tongue-section">
+                                    <h4><i class="fas fa-cloud"></i> Rêu lưỡi</h4>
+                                    <div class="tongue-options">
+                                        <div class="tongue-option" data-type="coating" data-value="thin-white">
+                                            <div class="tongue-icon"><i class="fas fa-feather"></i></div>
+                                            <div>Trắng mỏng</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="coating" data-value="thick-white">
+                                            <div class="tongue-icon"><i class="fas fa-layer-group"></i></div>
+                                            <div>Trắng dày</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="coating" data-value="yellow">
+                                            <div class="tongue-icon"><i class="fas fa-sun"></i></div>
+                                            <div>Vàng</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="coating" data-value="greasy">
+                                            <div class="tongue-icon"><i class="fas fa-tint"></i></div>
+                                            <div>Nhờn</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="coating" data-value="dry">
+                                            <div class="tongue-icon"><i class="fas fa-wind"></i></div>
+                                            <div>Khô</div>
+                                        </div>
+                                        <div class="tongue-option" data-type="coating" data-value="peeled">
+                                            <div class="tongue-icon"><i class="fas fa-map"></i></div>
+                                            <div>Bong tróc</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tongueShape">Hình dáng lưỡi</label>
+                                <select id="tongueShape" class="form-control">
+                                    <option value="">Chọn hình dáng</option>
+                                    <option value="normal">Bình thường</option>
+                                    <option value="swollen">Sưng to</option>
+                                    <option value="thin">Gầy nhỏ</option>
+                                    <option value="cracked">Nứt nẻ</option>
+                                    <option value="teeth-marks">Có vết răng</option>
+                                    <option value="stiff">Cứng đơ</option>
+                                    <option value="trembling">Run rẩy</option>
+                                    <option value="deviated">Lệch sang một bên</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tongueMoisture">Độ ẩm lưỡi</label>
+                                <select id="tongueMoisture" class="form-control">
+                                    <option value="">Chọn độ ẩm</option>
+                                    <option value="moist">Ẩm ướt</option>
+                                    <option value="normal">Bình thường</option>
+                                    <option value="dry">Khô</option>
+                                    <option value="very-dry">Rất khô</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tongueVeins">Tĩnh mạch dưới lưỡi</label>
+                                <select id="tongueVeins" class="form-control">
+                                    <option value="">Chọn tình trạng</option>
+                                    <option value="normal">Bình thường</option>
+                                    <option value="swollen">Giãn nở</option>
+                                    <option value="dark">Sẫm màu</option>
+                                    <option value="purple">Tím tái</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Pulse Tab -->
+                        <div class="tab-content" id="pulse-tab">
+                            <div class="form-group">
+                                <label>Kiến thức nền tảng về mạch</label>
+                                <div class="pulse-advanced">
+                                    <div class="pulse-position">
+                                        <h5><i class="fas fa-hand-point-right"></i> Vị trí bắt mạch (Tam bộ cửu hậu)</h5>
+                                        <div class="pulse-positions-grid">
+                                            <div class="pulse-position-item">
+                                                <h5>Tay trái</h5>
+                                                <p style="font-size: 14px;"><strong>Thốn:</strong> Tâm-Tiểu trường</p>
+                                                <p style="font-size: 14px;"><strong>Quan:</strong> Can-Đởm</p>
+                                                <p style="font-size: 14px;"><strong>Xích:</strong> Thận âm-Bàng quang</p>
+                                            </div>
+                                            <div class="pulse-position-item">
+                                                <h5>Tay phải</h5>
+                                                <p style="font-size: 14px;"><strong>Thốn:</strong> Phế-Đại trường</p>
+                                                <p style="font-size: 14px;"><strong>Quan:</strong> Tỳ-Vị</p>
+                                                <p style="font-size: 14px;"><strong>Xích:</strong> Thận dương-Tam tiêu</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Chọn loại mạch chính</label>
+                                <div class="pulse-types-grid">
+                                    <!-- Nhóm 1: Mạch phân biệt vị trí (Nông - Sâu) -->
+                                    <div class="pulse-type-option" data-type="main" data-value="phu">
+                                        <div class="pulse-icon"><i class="fas fa-water"></i></div>
+                                        <div>Phù (Nổi)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="tram">
+                                        <div class="pulse-icon"><i class="fas fa-mountain"></i></div>
+                                        <div>Trầm (Chìm)</div>
+                                    </div>
+                                    
+                                    <!-- Nhóm 2: Mạch phân biệt tốc độ (Nhanh - Chậm) -->
+                                    <div class="pulse-type-option" data-type="main" data-value="sac">
+                                        <div class="pulse-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        <div>Sác (Nhanh)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="tri">
+                                        <div class="pulse-icon"><i class="fas fa-hourglass-half"></i></div>
+                                        <div>Trì (Chậm)</div>
+                                    </div>
+                                    
+                                    <!-- Nhóm 3: Mạch phân biệt cường độ (Yếu - Mạnh) -->
+                                    <div class="pulse-type-option" data-type="main" data-value="hu">
+                                        <div class="pulse-icon"><i class="fas fa-weight"></i></div>
+                                        <div>Hư (Yếu)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="thuc">
+                                        <div class="pulse-icon"><i class="fas fa-fist-raised"></i></div>
+                                        <div>Thực (Mạnh)</div>
+                                    </div>
+                                    
+                                    <!-- Nhóm 4: Các hình thái mạch đặc biệt -->
+                                    <div class="pulse-type-option" data-type="main" data-value="hoat">
+                                        <div class="pulse-icon"><i class="fas fa-oil-can"></i></div>
+                                        <div>Hoạt (Trơn)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="sep">
+                                        <div class="pulse-icon"><i class="fas fa-stop"></i></div>
+                                        <div>Sáp (Rít)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="huyen">
+                                        <div class="pulse-icon"><i class="fas fa-guitar"></i></div>
+                                        <div>Huyền (Căng)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="hong">
+                                        <div class="pulse-icon"><i class="fas fa-water"></i></div>
+                                        <div>Hồng (Lớn)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="te">
+                                        <div class="pulse-icon"><i class="fas fa-minus"></i></div>
+                                        <div>Tế (Nhỏ)</div>
+                                    </div>
+                                    <div class="pulse-type-option" data-type="main" data-value="khac">
+                                        <div class="pulse-icon"><i class="fas fa-question"></i></div>
+                                        <div>Khác</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mô tả chi tiết về mạch được chọn -->
+                            <div class="pulse-description" id="pulseDescription">
+                                <h5 id="pulseName">Tên mạch</h5>
+                                <p id="pulseDetail">Mô tả chi tiết về mạch sẽ hiển thị ở đây</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pulseCombination">Kết hợp mạch (nếu có)</label>
+                                <select id="pulseCombination" class="form-control" multiple>
+                                    <option value="phu">Phù (Nổi)</option>
+                                    <option value="tram">Trầm (Chìm)</option>
+                                    <option value="sac">Sác (Nhanh)</option>
+                                    <option value="tri">Trì (Chậm)</option>
+                                    <option value="hoat">Hoạt (Trơn)</option>
+                                    <option value="sep">Sáp (Rít)</option>
+                                    <option value="huyen">Huyền (Căng)</option>
+                                    <option value="hong">Hồng (Lớn)</option>
+                                    <option value="te">Tế (Nhỏ)</option>
+                                    <option value="hu">Hư (Yếu)</option>
+                                    <option value="thuc">Thực (Mạnh)</option>
+                                </select>
+                                <small class="form-text text-muted">Giữ Ctrl để chọn nhiều loại mạch kết hợp</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pulseStrength">Cường độ mạch</label>
+                                <select id="pulseStrength" class="form-control">
+                                    <option value="">Chọn cường độ</option>
+                                    <option value="1">Rất yếu</option>
+                                    <option value="2">Yếu</option>
+                                    <option value="3">Trung bình</option>
+                                    <option value="4">Mạnh</option>
+                                    <option value="5">Rất mạnh</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pulseLocation">Vị trí mạch rõ nhất</label>
+                                <select id="pulseLocation" class="form-control">
+                                    <option value="">Chọn vị trí</option>
+                                    <option value="thon_trai">Thốn tay trái</option>
+                                    <option value="quan_trai">Quan tay trái</option>
+                                    <option value="xich_trai">Xích tay trái</option>
+                                    <option value="thon_phai">Thốn tay phải</option>
+                                    <option value="quan_phai">Quan tay phải</option>
+                                    <option value="xich_phai">Xích tay phải</option>
+                                    <option value="deu_ca_hai_tay">Đều cả hai tay</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Modern Medicine Tab -->
+                        <div class="tab-content" id="modern-tab">
+                            <div class="modern-medicine-section">
+                                <h4><i class="fas fa-flask"></i> Xét nghiệm máu cơ bản</h4>
+                                <div class="lab-results-grid">
+                                    <div class="lab-item">
+                                        <label for="bloodSugar">Đường huyết (mg/dL)</label>
+                                        <input type="number" id="bloodSugar" placeholder="70-100">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="bloodPressure">Huyết áp (mmHg)</label>
+                                        <input type="text" id="bloodPressure" placeholder="120/80">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="cholesterol">Cholesterol (mg/dL)</label>
+                                        <input type="number" id="cholesterol" placeholder="<200">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="wbc">Bạch cầu (10^9/L)</label>
+                                        <input type="number" id="wbc" placeholder="4.0-11.0">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="rbc">Hồng cầu (10^12/L)</label>
+                                        <input type="number" id="rbc" placeholder="4.2-5.9">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="platelets">Tiểu cầu (10^9/L)</label>
+                                        <input type="number" id="platelets" placeholder="150-450">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="crp">CRP (mg/L)</label>
+                                        <input type="number" id="crp" placeholder="<5">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="ast">AST (U/L)</label>
+                                        <input type="number" id="ast" placeholder="5-40">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="alt">ALT (U/L)</label>
+                                        <input type="number" id="alt" placeholder="7-56">
+                                    </div>
+                                    <div class="lab-item">
+                                        <label for="creatinine">Creatinine (mg/dL)</label>
+                                        <input type="number" id="creatinine" placeholder="0.6-1.2">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modern-medicine-section">
+                                <h4><i class="fas fa-procedures"></i> Hình ảnh học & Chẩn đoán khác</h4>
+                                <div class="form-group">
+                                    <label for="imagingResults">Kết quả chẩn đoán hình ảnh</label>
+                                    <textarea id="imagingResults" class="form-control" placeholder="Mô tả kết quả X-quang, siêu âm, CT, MRI..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="otherTests">Xét nghiệm khác</label>
+                                    <textarea id="otherTests" class="form-control" placeholder="Mô tả kết quả xét nghiệm khác..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Tab -->
+                        <div class="tab-content" id="history-tab">
+                            <div class="form-group">
+                                <label for="medicalHistory">Tiền sử bệnh</label>
+                                <textarea id="medicalHistory" class="form-control" placeholder="Mô tả tiền sử bệnh, các bệnh đã mắc trước đây..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="familyHistory">Tiền sử gia đình</label>
+                                <textarea id="familyHistory" class="form-control" placeholder="Mô tả tiền sử bệnh trong gia đình..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lifestyle">Lối sống và thói quen</label>
+                                <textarea id="lifestyle" class="form-control" placeholder="Mô tả lối sống, thói quen ăn uống, sinh hoạt..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-text" id="progressText">Đang phân tích...</div>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;" id="submitBtn">
+                            <i class="fas fa-robot"></i> Phân tích & Chẩn đoán
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="diagnosis-result" id="treatmentResult">
+                    <div class="result-header">
+                        <h3>Kết quả chẩn đoán</h3>
+                        <div class="confidence">Độ tin cậy: <span id="confidenceValue">-</span></div>
+                    </div>
+                    
+                    <div class="result-tabs">
+                        <div class="result-tab active" data-result-tab="modern">Y học hiện đại</div>
+                        <div class="result-tab traditional" data-result-tab="traditional">Y học cổ truyền</div>
+                    </div>
+                    
+                    <!-- Modern Medicine Results -->
+                    <div class="result-content active" id="modern-result">
+                        <div class="modern-result">
+                            <h4><i class="fas fa-stethoscope"></i> Chẩn đoán Y học hiện đại</h4>
+                            <div class="diagnosis-condition" id="modernDiagnosisResult">
+                                <i class="fas fa-info-circle"></i> Vui lòng nhập thông tin để nhận chẩn đoán
+                            </div>
+                            
+                            <h4>Phác đồ điều trị</h4>
+                            <ul class="treatment-list" id="modernTreatmentList">
+                                <li><i class="fas fa-info-circle"></i> <span>Chờ kết quả phân tích</span></li>
+                            </ul>
+                            
+                            <h4>Khuyến nghị</h4>
+                            <ul class="treatment-list" id="modernRecommendations">
+                                <li><i class="fas fa-info-circle"></i> <span>Chờ kết quả phân tích</span></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="detailed-analysis" id="modernDetailedAnalysis">
+                            <h4>Phân tích chi tiết</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-item">
+                                    <h5>Triệu chứng</h5>
+                                    <p id="modern-symptom-analysis">Đang phân tích...</p>
+                                </div>
+                                <div class="analysis-item">
+                                    <h5>Chỉ số cận lâm sàng</h5>
+                                    <p id="modern-lab-analysis">Đang phân tích...</p>
+                                </div>
+                                <div class="analysis-item">
+                                    <h5>Đánh giá tổng quan</h5>
+                                    <p id="modern-overall-analysis">Đang phân tích...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Traditional Medicine Results -->
+                    <div class="result-content" id="traditional-result">
+                        <div class="modern-result">
+                            <h4><i class="fas fa-yin-yang"></i> Chẩn đoán Y học cổ truyền</h4>
+                            <div class="diagnosis-condition" id="diagnosisResult">
+                                <i class="fas fa-info-circle"></i> Vui lòng nhập thông tin để nhận chẩn đoán
+                            </div>
+                            
+                            <div id="differentialDiagnosis" style="margin: 1.5rem 0; display: none;">
+                                <h4>Chẩn đoán phân biệt</h4>
+                                <ul class="treatment-list" id="differentialList">
+                                </ul>
+                            </div>
+                            
+                            <h4>Phương pháp điều trị đề xuất</h4>
+                            <ul class="treatment-list" id="treatmentList">
+                                <li><i class="fas fa-info-circle"></i> <span>Chờ kết quả phân tích</span></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="detailed-analysis" id="detailedAnalysis">
+                            <h4>Phân tích chi tiết</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-item">
+                                    <h5>Triệu chứng</h5>
+                                    <p id="symptom-analysis">Đang phân tích...</p>
+                                </div>
+                                <div class="analysis-item">
+                                    <h5>Chất lưỡi</h5>
+                                    <p id="substance-analysis">Đang phân tích...</p>
+                                </div>
+                                <div class="analysis-item">
+                                    <h5>Rêu lưỡi</h5>
+                                    <p id="coating-analysis">Đang phân tích...</p>
+                                </div>
+                                <div class="analysis-item">
+                                    <h5>Mạch</h5>
+                                    <p id="pulse-analysis">Đang phân tích...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 AI & Y học cổ truyền. Bản quyền của BSCKI. Nguyễn Văn Dũng</p>
+        </div>
+    </footer>
+
+    <script>
+        // Cơ sở dữ liệu triệu chứng mở rộng
+        const symptomsDatabase = [
+            { id: 'headache', name: 'Đau đầu', weight: 8, category: 'thần kinh' },
+            { id: 'fever', name: 'Sốt', weight: 9, category: 'toàn thân' },
+            { id: 'cough', name: 'Ho', weight: 7, category: 'hô hấp' },
+            { id: 'fatigue', name: 'Mệt mỏi', weight: 6, category: 'toàn thân' },
+            { id: 'nausea', name: 'Buồn nôn', weight: 7, category: 'tiêu hóa' },
+            { id: 'dizziness', name: 'Chóng mặt', weight: 6, category: 'thần kinh' },
+            { id: 'insomnia', name: 'Mất ngủ', weight: 7, category: 'thần kinh' },
+            { id: 'poorAppetite', name: 'Chán ăn', weight: 6, category: 'tiêu hóa' },
+            { id: 'thirst', name: 'Khát nước', weight: 5, category: 'toàn thân' },
+            { id: 'sweating', name: 'Ra mồ hôi', weight: 5, category: 'toàn thân' },
+            { id: 'chestTightness', name: 'Tức ngực', weight: 8, category: 'hô hấp' },
+            { id: 'abdominalPain', name: 'Đau bụng', weight: 7, category: 'tiêu hóa' },
+            { id: 'backPain', name: 'Đau lưng', weight: 6, category: 'cơ xương' },
+            { id: 'jointPain', name: 'Đau khớp', weight: 6, category: 'cơ xương' },
+            { id: 'shortnessBreath', name: 'Khó thở', weight: 9, category: 'hô hấp' },
+            { id: 'palpitations', name: 'Hồi hộp', weight: 7, category: 'tim mạch' },
+            { id: 'blurredVision', name: 'Mờ mắt', weight: 6, category: 'thị giác' },
+            { id: 'tinnitus', name: 'Ù tai', weight: 5, category: 'thính giác' },
+            { id: 'constipation', name: 'Táo bón', weight: 5, category: 'tiêu hóa' },
+            { id: 'diarrhea', name: 'Tiêu chảy', weight: 7, category: 'tiêu hóa' },
+            { id: 'frequentUrination', name: 'Tiểu nhiều', weight: 5, category: 'tiết niệu' },
+            { id: 'urinaryPain', name: 'Đau khi tiểu', weight: 6, category: 'tiết niệu' },
+            { id: 'skinRash', name: 'Phát ban da', weight: 5, category: 'da liễu' },
+            { id: 'itchiness', name: 'Ngứa', weight: 4, category: 'da liễu' },
+            { id: 'coldLimbs', name: 'Tay chân lạnh', weight: 5, category: 'tuần hoàn' },
+            { id: 'hotFlashes', name: 'Bốc hỏa', weight: 6, category: 'nội tiết' },
+            { id: 'weightLoss', name: 'Sụt cân', weight: 7, category: 'toàn thân' },
+            { id: 'weightGain', name: 'Tăng cân', weight: 5, category: 'toàn thân' },
+            { id: 'dryMouth', name: 'Khô miệng', weight: 4, category: 'toàn thân' },
+            { id: 'bitterTaste', name: 'Đắng miệng', weight: 4, category: 'tiêu hóa' }
+        ];
+
+        // Cơ sở dữ liệu mạch chi tiết
+        const pulseDatabase = {
+            'phu': {
+                name: 'Mạch Phù (Nổi)',
+                description: 'Đặt nhẹ tay đã thấy mạch đập, ấn mạnh thì thấy yếu đi hoặc mất. Biểu hiện bệnh ở Biểu (bên ngoài, cảm mạo).',
+                meaning: 'Bệnh ở Biểu, thường gặp trong cảm mạo, phong hàn, phong nhiệt.',
+                combinations: {
+                    'phu_hoan': 'Phù Hoãn: Cảm phong hàn',
+                    'phu_sac': 'Phù Sác: Cảm phong nhiệt'
+                }
+            },
+            'tram': {
+                name: 'Mạch Trầm (Chìm)',
+                description: 'Đặt nhẹ không thấy, ấn mạnh sát xương mới thấy mạch đập. Biểu hiện bệnh ở Lý (tạng phủ bên trong).',
+                meaning: 'Bệnh đã vào sâu trong tạng phủ hoặc do khí huyết bị thực trệ.',
+                combinations: {}
+            },
+            'sac': {
+                name: 'Mạch Sác (Nhanh)',
+                description: 'Mạch đập nhanh, trên 90 lần/phút (một hơi thở mạch đập trên 5 lần). Biểu hiện chứng Nhiệt (Nóng).',
+                meaning: 'Cơ thể đang có nhiệt (sốt, viêm nhiễm, hoặc âm hư sinh nội nhiệt).',
+                combinations: {}
+            },
+            'tri': {
+                name: 'Mạch Trì (Chậm)',
+                description: 'Mạch đập chậm, dưới 60 lần/phút (một hơi thở thầy thuốc mạch đập dưới 4 lần). Biểu hiện chứng Hàn (Lạnh).',
+                meaning: 'Dương khí hư, trong người có hàn lạnh, huyết lưu thông kém.',
+                combinations: {}
+            },
+            'hu': {
+                name: 'Mạch Hư (Yếu)',
+                description: 'Ấn vào thấy mềm, rỗng, vô lực (cả 3 bộ đều yếu). Biểu hiện chính khí suy.',
+                meaning: 'Cơ thể suy nhược, khí huyết hư.',
+                combinations: {}
+            },
+            'thuc': {
+                name: 'Mạch Thực (Mạnh)',
+                description: 'Ấn vào thấy đầy, chắc, có lực (cả 3 bộ đều mạnh). Biểu hiện tà khí thực.',
+                meaning: 'Bệnh cấp tính, thực tích, ứ trệ.',
+                combinations: {}
+            },
+            'hoat': {
+                name: 'Mạch Hoạt (Trơn)',
+                description: 'Cảm giác trơn tru, lưu lợi như "hạt châu lăn trên mâm".',
+                meaning: 'Đàm thấp (người béo, mỡ máu, đờm nhiều), thực tích (ăn không tiêu), hoặc có thai.',
+                combinations: {}
+            },
+            'sep': {
+                name: 'Mạch Sáp (Rít)',
+                description: 'Đi khó khăn, rít, như "dao cạo vào tre", không lưu lợi.',
+                meaning: 'Huyết ứ, thiếu máu, tinh thương (tinh trùng yếu).',
+                combinations: {}
+            },
+            'huyen': {
+                name: 'Mạch Huyền (Căng)',
+                description: 'Mạch thẳng và dài, ấn vào có cảm giác căng cứng như sờ vào dây đàn cầm.',
+                meaning: 'Bệnh về Can (Gan), Đởm, cao huyết áp, các chứng đau.',
+                combinations: {}
+            },
+            'hong': {
+                name: 'Mạch Hồng (Lớn)',
+                description: 'Mạch đi lớn, cuồn cuộn như sóng vỗ (đến mạnh đi yếu).',
+                meaning: 'Nhiệt cực thịnh (sốt cao, viêm nhiễm nặng).',
+                combinations: {}
+            },
+            'te': {
+                name: 'Mạch Tế (Nhỏ)',
+                description: 'Mạch nhỏ như sợi chỉ nhưng vẫn bắt được rõ ràng.',
+                meaning: 'Khí huyết đều hư, thường gặp ở người ốm lâu ngày.',
+                combinations: {}
+            },
+            'khac': {
+                name: 'Mạch Khác',
+                description: 'Mô tả chi tiết về mạch đặc biệt khác.',
+                meaning: 'Cần kết hợp với các triệu chứng khác để chẩn đoán chính xác.',
+                combinations: {}
+            }
+        };
+
+        // Cơ sở dữ liệu lưỡi chi tiết
+        const tongueDatabase = {
+            substance: {
+                'pale': {
+                    name: 'Chất lưỡi nhạt',
+                    description: 'Lưỡi có màu nhạt hơn bình thường, thường là màu hồng nhạt hoặc trắng nhạt.',
+                    meaning: 'Biểu hiện của khí huyết hư, dương khí bất túc, thường gặp trong các chứng hư hàn, thiếu máu, suy nhược cơ thể.',
+                    details: 'Thường đi kèm với các triệu chứng mệt mỏi, chân tay lạnh, sợ lạnh, ăn uống kém.'
+                },
+                'red': {
+                    name: 'Chất lưỡi đỏ',
+                    description: 'Lưỡi có màu đỏ tươi hoặc đỏ thẫm hơn bình thường.',
+                    meaning: 'Biểu hiện của nhiệt chứng, âm hư hỏa vượng, thường gặp trong các bệnh nhiễm khuẩn, sốt, viêm nhiễm.',
+                    details: 'Thường đi kèm với khát nước, miệng khô, nước tiểu vàng, táo bón.'
+                },
+                'deep-red': {
+                    name: 'Chất lưỡi đỏ sẫm',
+                    description: 'Lưỡi có màu đỏ sẫm, thậm chí đỏ tía.',
+                    meaning: 'Biểu hiện của nhiệt thịnh, nhiệt nhập doanh huyết, thường gặp trong các bệnh nhiễm trùng nặng, sốt cao.',
+                    details: 'Thường đi kèm với sốt cao, mê sảng, ban chẩn, chảy máu.'
+                },
+                'purple': {
+                    name: 'Chất lưỡi tím',
+                    description: 'Lưỡi có màu tím, có thể toàn bộ lưỡi hoặc từng vùng.',
+                    meaning: 'Biểu hiện của huyết ứ, khí trệ, thường gặp trong các bệnh tim mạch, hô hấp mạn tính, đau nhức kéo dài.',
+                    details: 'Thường đi kèm với đau nhức cố định, da xanh xao, môi thâm.'
+                },
+                'pale-purple': {
+                    name: 'Chất lưỡi tím nhạt',
+                    description: 'Lưỡi có màu tím nhạt, thường kèm theo sưng.',
+                    meaning: 'Biểu hiện của hàn ngưng huyết ứ, dương khí hư suy, thường gặp trong các bệnh mạn tính, suy nhược nặng.',
+                    details: 'Thường đi kèm với sợ lạnh, chân tay lạnh, đau nhức tăng khi trời lạnh.'
+                },
+                'blue': {
+                    name: 'Chất lưỡi xanh',
+                    description: 'Lưỡi có màu xanh nhạt hoặc xanh thẫm.',
+                    meaning: 'Biểu hiện của hàn thấp nặng, huyết ứ trầm trọng, thường gặp trong các bệnh cấp tính nặng, sốc.',
+                    details: 'Thường đi kèm với đau bụng dữ dội, nôn mửa, chân tay lạnh toát.'
+                }
+            },
+            coating: {
+                'thin-white': {
+                    name: 'Rêu lưỡi trắng mỏng',
+                    description: 'Rêu lưỡi màu trắng, mỏng, phủ đều trên mặt lưỡi.',
+                    meaning: 'Biểu hiện bệnh tại biểu, hàn chứng, thường gặp trong cảm mạo phong hàn giai đoạn đầu.',
+                    details: 'Thường đi kèm với sợ lạnh, sốt nhẹ, đau đầu, nghẹt mũi.'
+                },
+                'thick-white': {
+                    name: 'Rêu lưỡi trắng dày',
+                    description: 'Rêu lưỡi màu trắng, dày, che kín mặt lưỡi.',
+                    meaning: 'Biểu hiện của đàm thấp, hàn thấp nội trở, thường gặp trong các bệnh tiêu hóa, hô hấp do đàm thấp.',
+                    details: 'Thường đi kèm với đầy bụng, ăn không tiêu, ho có đờm nhiều.'
+                },
+                'yellow': {
+                    name: 'Rêu lưỡi vàng',
+                    description: 'Rêu lưỡi màu vàng, có thể mỏng hoặc dày tùy mức độ nhiệt.',
+                    meaning: 'Biểu hiện của nhiệt chứng, nhiệt tà thương tân, thường gặp trong các bệnh nhiễm khuẩn, sốt.',
+                    details: 'Thường đi kèm với sốt, khát nước, miệng đắng, nước tiểu vàng.'
+                },
+                'greasy': {
+                    name: 'Rêu lưỡi nhờn',
+                    description: 'Rêu lưỡi trơn, bóng, như có dầu mỡ phủ trên bề mặt.',
+                    meaning: 'Biểu hiện của đàm thấp, thấp trở trung tiêu, thường gặp trong các bệnh rối loạn tiêu hóa, béo phì.',
+                    details: 'Thường đi kèm với đầy bụng, buồn nôn, ăn uống kém, người nặng nề.'
+                },
+                'dry': {
+                    name: 'Rêu lưỡi khô',
+                    description: 'Rêu lưỡi khô, ráp, thiếu độ ẩm.',
+                    meaning: 'Biểu hiện của tân dịch thương tổn, nhiệt thịnh, thường gặp trong sốt cao kéo dài, mất nước.',
+                    details: 'Thường đi kèm với khát nước nhiều, da khô, táo bón, nước tiểu ít.'
+                },
+                'peeled': {
+                    name: 'Rêu lưỡi bong tróc',
+                    description: 'Rêu lưỡi không đều, có vùng bong tróc để lộ chất lưỡi bên dưới.',
+                    meaning: 'Biểu hiện của vị âm hư, khí âm lưỡng thương, thường gặp trong các bệnh mạn tính, suy nhược kéo dài.',
+                    details: 'Thường đi kèm với miệng khô, ăn uống kém, mệt mỏi, sút cân.'
+                }
+            },
+            shape: {
+                'normal': {
+                    name: 'Lưỡi bình thường',
+                    description: 'Lưỡi có kích thước, hình dáng bình thường, không sưng, không teo.',
+                    meaning: 'Biểu hiện của trạng thái sức khỏe tốt, khí huyết đầy đủ.',
+                    details: 'Lưỡi có màu hồng nhạt, rêu trắng mỏng, ẩm vừa phải.'
+                },
+                'swollen': {
+                    name: 'Lưỡi sưng to',
+                    description: 'Lưỡi to, dày, có thể có vết răng ở rìa lưỡi.',
+                    meaning: 'Biểu hiện của tỳ hư thấp trệ, thận dương hư, thường gặp trong các bệnh phù nề, rối loạn tiêu hóa.',
+                    details: 'Thường đi kèm với mệt mỏi, ăn uống kém, đầy bụng, tiêu chảy.'
+                },
+                'thin': {
+                    name: 'Lưỡi gầy nhỏ',
+                    description: 'Lưỡi nhỏ, mỏng, teo lại so với bình thường.',
+                    meaning: 'Biểu hiện của âm huyết hư, tân dịch khuy tổn, thường gặp trong các bệnh mạn tính, suy nhược kéo dài.',
+                    details: 'Thường đi kèm với gầy sút, da khô, mất ngủ, chóng mặt.'
+                },
+                'cracked': {
+                    name: 'Lưỡi nứt nẻ',
+                    description: 'Trên mặt lưỡi có các đường nứt, rãnh sâu.',
+                    meaning: 'Biểu hiện của âm huyết hư, tân dịch bất túc, thường gặp trong các bệnh mạn tính, sốt kéo dài.',
+                    details: 'Thường đi kèm với miệng khô, khát nước, da khô, táo bón.'
+                },
+                'teeth-marks': {
+                    name: 'Lưỡi có vết răng',
+                    description: 'Rìa lưỡi có in hằn vết răng, lưỡi thường sưng to.',
+                    meaning: 'Biểu hiện của tỳ hư, khí hư, thấp trệ, thường gặp trong các bệnh rối loạn tiêu hóa, phù nề.',
+                    details: 'Thường đi kèm với mệt mỏi, ăn uống kém, đầy bụng, phân nát.'
+                },
+                'stiff': {
+                    name: 'Lưỡi cứng đơ',
+                    description: 'Lưỡi cứng, khó cử động, nói khó.',
+                    meaning: 'Biểu hiện của nhiệt nhập tâm bào, can phong nội động, thường gặp trong các bệnh thần kinh cấp tính.',
+                    details: 'Thường đi kèm với sốt cao, co giật, hôn mê, liệt nửa người.'
+                },
+                'trembling': {
+                    name: 'Lưỡi run rẩy',
+                    description: 'Lưỡi run rẩy, không giữ yên được.',
+                    meaning: 'Biểu hiện của can phong nội động, khí huyết hư, thường gặp trong các bệnh thần kinh, Parkinson.',
+                    details: 'Thường đi kèm với chóng mặt, hoa mắt, tay chân run, mất thăng bằng.'
+                },
+                'deviated': {
+                    name: 'Lưỡi lệch sang một bên',
+                    description: 'Lưỡi bị lệch sang một bên khi thè ra.',
+                    meaning: 'Biểu hiện của trúng phong, can phong nội động, thường gặp trong tai biến mạch máu não.',
+                    details: 'Thường đi kèm với liệt nửa người, nói khó, méo miệng.'
+                }
+            }
+        };
+
+        // Cơ sở dữ liệu bệnh lý Y học cổ truyền
+        const conditionsDatabase = [
+            {
+                id: 'phongNhiet',
+                name: 'CẢM MẠO PHONG NHIỆT',
+                symptoms: ['sốt', 'đau đầu', 'ho', 'khát nước'],
+                tongueSubstance: ['red', 'deep-red'],
+                tongueCoating: ['yellow', 'dry'],
+                pulse: ['sac', 'phu'],
+                treatments: [
+                    'Bài thuốc: Ngân kiều tán gia giảm (Kim ngân, Liên kiều, Cát cánh, Bạc hà)',
+                    'Châm cứu: Đại chùy, Khúc trì, Hợp cốc, Thiên đột',
+                    'Ăn uống: Bạc hà, kinh giới, lá dâu, cam thảo',
+                    'Tránh: Đồ cay nóng, chất kích thích'
+                ],
+                analysis: 'Nhiệt tà xâm phạm phế vệ, làm tổn thương tân dịch'
+            },
+            {
+                id: 'tyViHuHan',
+                name: 'TỲ VỊ HƯ HÀN',
+                symptoms: ['mệt mỏi', 'chán ăn', 'buồn nôn', 'đau bụng'],
+                tongueSubstance: ['pale', 'pale-purple'],
+                tongueCoating: ['thick-white', 'greasy'],
+                pulse: ['tram', 'tri', 'hu'],
+                treatments: [
+                    'Bài thuốc: Lý trung thang (Đảng sâm, Bạch truật, Can khương, Cam thảo)',
+                    'Châm cứu: Túc tam lý, Trung quản, Tỳ du, Vị du',
+                    'Cứu ngải: Quan nguyên, Khí hải, Tỳ du',
+                    'Ăn uống: Gừng, táo tàu, ý dĩ, hạt sen'
+                ],
+                analysis: 'Trung tiêu hư yếu, dương khí bất túc, vận hóa kém'
+            },
+            {
+                id: 'pheNhietDamTro',
+                name: 'PHẾ NHIỆT ĐÀM TRỞ',
+                symptoms: ['ho', 'tức ngực', 'khó thở', 'sốt'],
+                tongueSubstance: ['red', 'deep-red'],
+                tongueCoating: ['yellow', 'greasy'],
+                pulse: ['hoat', 'sac'],
+                treatments: [
+                    'Bài thuốc: Ma hạ thạch can thang (Ma hoàng, Hạnh nhân, Thạch cao, Cam thảo)',
+                    'Châm cứu: Phế du, Xích trạch, Liệt khuyết, Phong long',
+                    'Xông hơi: Tinh dầu bạc hà, khuynh diệp',
+                    'Ăn uống: Lê hấp đường phèn, củ cải trắng'
+                ],
+                analysis: 'Nhiệt tà úng phế, đàm nhiệt nội kết, phế khí bất túc'
+            },
+            {
+                id: 'tamThanAmHu',
+                name: 'TÂM THẬN ÂM HƯ',
+                symptoms: ['mất ngủ', 'chóng mặt', 'hồi hộp', 'ù tai'],
+                tongueSubstance: ['red', 'deep-red'],
+                tongueCoating: ['peeled', 'dry'],
+                pulse: ['te', 'sac'],
+                treatments: [
+                    'Bài thuốc: Thiên vương bổ tâm đơn (Đảng sâm, Mạch môn, Thiên môn, Viễn chí)',
+                    'Châm cứu: Thần môn, Nội quan, Tam âm giao, Thái khê',
+                    'Bấm huyệt: Ấn đường, Bách hội, Thần môn',
+                    'Ăn uống: Hạt sen, long nhãn, kỷ tử, táo tàu'
+                ],
+                analysis: 'Thủy hỏa bất tế, tâm thận bất giao, âm hư hỏa vượng'
+            },
+            {
+                id: 'canKhiUatKet',
+                name: 'CAN KHÍ UẤT KẾT',
+                symptoms: ['tức ngực', 'đau bụng', 'hồi hộp', 'mất ngủ'],
+                tongueSubstance: ['purple', 'pale-purple'],
+                tongueCoating: ['thin-white', 'greasy'],
+                pulse: ['huyen', 'sep'],
+                treatments: [
+                    'Bài thuốc: Sài hồ sơ can tán (Sài hồ, Bạch thược, Chỉ xác, Cam thảo)',
+                    'Châm cứu: Thái xung, Hành gian, Cách du, Can du',
+                    'Xoa bóp: Vùng ngực, hông sườn, bụng',
+                    'Ăn uống: Nghệ, gừng, trần bì, sài hồ'
+                ],
+                analysis: 'Can khí uất kết, khí trệ huyết ứ, kinh lạc bất thông'
+            },
+            {
+                id: 'tyThapDamAm',
+                name: 'TỲ THẤP ĐÀM ẨM',
+                symptoms: ['buồn nôn', 'chán ăn', 'mệt mỏi', 'đau bụng'],
+                tongueSubstance: ['pale', 'pale-purple'],
+                tongueCoating: ['greasy', 'thick-white'],
+                pulse: ['hoat', 'tram'],
+                treatments: [
+                    'Bài thuốc: Hương sa lục quân tử thang (Đảng sâm, Bạch truật, Trần bì, Bán hạ)',
+                    'Châm cứu: Trung quản, Túc tam lý, Tỳ du, Phong long',
+                    'Cứu ngải: Trung quản, Tỳ du, Túc tam lý',
+                    'Ăn uống: Ý dĩ, đậu đỏ, trần bì, gừng tươi'
+                ],
+                analysis: 'Thấp tà khốn tỳ, trung tiêu bất vận, đàm ẩm nội sinh'
+            }
+        ];
+
+        // Cơ sở dữ liệu bệnh lý Y học hiện đại
+        const modernConditionsDatabase = [
+            {
+                id: 'upperRespiratoryInfection',
+                name: 'NHIỄM TRÙNG ĐƯỜNG HÔ HẤP TRÊN',
+                symptoms: ['sốt', 'ho', 'đau đầu', 'mệt mỏi'],
+                labFindings: {
+                    wbc: '>11.0',
+                    crp: '>10'
+                },
+                treatments: [
+                    'Thuốc hạ sốt: Paracetamol 500mg x 3-4 lần/ngày',
+                    'Kháng sinh (nếu nghi ngờ nhiễm khuẩn): Amoxicillin 500mg x 3 lần/ngày',
+                    'Thuốc giảm ho: Dextromethorphan 15mg x 3-4 lần/ngày',
+                    'Nghỉ ngơi, uống nhiều nước'
+                ],
+                recommendations: [
+                    'Theo dõi nhiệt độ hàng ngày',
+                    'Tái khám nếu sốt cao kéo dài >3 ngày',
+                    'Xét nghiệm công thức máu để đánh giá tình trạng nhiễm trùng'
+                ],
+                analysis: 'Triệu chứng phù hợp với nhiễm trùng đường hô hấp trên do virus hoặc vi khuẩn'
+            },
+            {
+                id: 'gastroenteritis',
+                name: 'VIÊM DẠ DÀY RUỘT',
+                symptoms: ['buồn nôn', 'đau bụng', 'tiêu chảy', 'mệt mỏi'],
+                labFindings: {
+                    wbc: '>11.0',
+                    crp: '>10'
+                },
+                treatments: [
+                    'Bù nước và điện giải: Oresol theo hướng dẫn',
+                    'Thuốc giảm đau bụng: Buscopan 10mg x 3 lần/ngày',
+                    'Thuốc cầm tiêu chảy: Loperamide 2mg sau mỗi lần đi tiêu (tối đa 8mg/ngày)',
+                    'Chế độ ăn: Nhẹ, dễ tiêu hóa'
+                ],
+                recommendations: [
+                    'Theo dõi tình trạng mất nước',
+                    'Tái khám nếu tiêu chảy kéo dài >3 ngày hoặc có dấu hiệu mất nước nặng',
+                    'Xét nghiệm phân nếu nghi ngờ nhiễm khuẩn'
+                ],
+                analysis: 'Triệu chứng phù hợp với viêm dạ dày ruột cấp tính'
+            },
+            {
+                id: 'hypertension',
+                name: 'TĂNG HUYẾT ÁP',
+                symptoms: ['đau đầu', 'chóng mặt', 'hồi hộp', 'mệt mỏi'],
+                labFindings: {
+                    bloodPressure: '>140/90'
+                },
+                treatments: [
+                    'Thuốc hạ áp: Amlodipine 5mg x 1 lần/ngày',
+                    'Theo dõi huyết áp hàng ngày',
+                    'Chế độ ăn giảm muối, giảm mỡ',
+                    'Tập thể dục đều đặn'
+                ],
+                recommendations: [
+                    'Theo dõi huyết áp 2 lần/ngày',
+                    'Tái khám định kỳ hàng tháng',
+                    'Xét nghiệm chức năng thận, điện tim đồ'
+                ],
+                analysis: 'Triệu chứng và chỉ số huyết áp phù hợp với tăng huyết áp'
+            },
+            {
+                id: 'diabetes',
+                name: 'ĐÁI THÁO ĐƯỜNG',
+                symptoms: ['khát nước', 'tiểu nhiều', 'mệt mỏi', 'sụt cân'],
+                labFindings: {
+                    bloodSugar: '>126'
+                },
+                treatments: [
+                    'Thuốc hạ đường huyết: Metformin 500mg x 2 lần/ngày',
+                    'Chế độ ăn kiêng đường, tinh bột',
+                    'Theo dõi đường huyết đói và sau ăn',
+                    'Tập thể dục đều đặn'
+                ],
+                recommendations: [
+                    'Theo dõi đường huyết hàng ngày',
+                    'Tái khám định kỳ 3 tháng/lần',
+                    'Xét nghiệm HbA1c 3 tháng/lần'
+                ],
+                analysis: 'Triệu chứng và chỉ số đường huyết phù hợp với đái tháo đường'
+            },
+            {
+                id: 'anemia',
+                name: 'THIẾU MÁU',
+                symptoms: ['mệt mỏi', 'chóng mặt', 'da xanh xao', 'khó thở'],
+                labFindings: {
+                    rbc: '<4.2',
+                    hemoglobin: '<12'
+                },
+                treatments: [
+                    'Bổ sung sắt: Ferrous sulfate 325mg x 1-2 lần/ngày',
+                    'Bổ sung vitamin B12 (nếu cần)',
+                    'Chế độ ăn giàu sắt: thịt đỏ, rau xanh đậm',
+                    'Nghỉ ngơi đầy đủ'
+                ],
+                recommendations: [
+                    'Theo dõi công thức máu sau 1-3 tháng điều trị',
+                    'Tìm nguyên nhân gây thiếu máu',
+                    'Tái khám khi có triệu chứng nặng hơn'
+                ],
+                analysis: 'Triệu chứng và chỉ số hồng cầu phù hợp với thiếu máu'
+            }
+        ];
+
+        // Khởi tạo trang web
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tạo hiệu ứng tuyết rơi
+            createSnowEffect();
+            
+            // Tải danh sách triệu chứng
+            loadSymptoms();
+            
+            // Xử lý tìm kiếm triệu chứng
+            document.getElementById('symptomSearch').addEventListener('input', function() {
+                filterSymptoms(this.value);
+            });
+            
+            // Xử lý chọn mạch
+            document.querySelectorAll('.pulse-type-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.pulse-type-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const pulseType = this.getAttribute('data-value');
+                    showPulseDescription(pulseType);
+                });
+            });
+            
+            // Xử lý chọn lưỡi
+            document.querySelectorAll('.tongue-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    // Chỉ cho phép chọn một option cho mỗi loại
+                    document.querySelectorAll(`.tongue-option[data-type="${type}"]`).forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Hiển thị mô tả chi tiết về lưỡi
+                    const value = this.getAttribute('data-value');
+                    showTongueDescription(type, value);
+                });
+            });
+
+            // Xử lý tabs kết quả
+            document.querySelectorAll('.result-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.result-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const resultTabId = this.getAttribute('data-result-tab');
+                    document.getElementById(`${resultTabId}-result`).classList.add('active');
+                });
+            });
+        });
+
+        // Tạo hiệu ứng tuyết rơi
+        function createSnowEffect() {
+            const snowContainer = document.getElementById('snowContainer');
+            const snowflakes = ['❄', '❅', '❆', '•'];
+            
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+                snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        // Tải danh sách triệu chứng
+        function loadSymptoms() {
+            const container = document.getElementById('symptomsContainer');
+            container.innerHTML = '';
+            
+            symptomsDatabase.forEach(symptom => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'symptom-checkbox';
+                checkboxDiv.innerHTML = `
+                    <input type="checkbox" id="${symptom.id}" value="${symptom.name}" data-weight="${symptom.weight}" data-category="${symptom.category}">
+                    <label for="${symptom.id}">${symptom.name}</label>
+                `;
+                container.appendChild(checkboxDiv);
+            });
+        }
+
+        // Lọc triệu chứng theo từ khóa
+        function filterSymptoms(keyword) {
+            const container = document.getElementById('symptomsContainer');
+            const checkboxes = container.querySelectorAll('.symptom-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                const label = checkbox.querySelector('label');
+                const symptomName = label.textContent.toLowerCase();
+                
+                if (symptomName.includes(keyword.toLowerCase()) || keyword === '') {
+                    checkbox.style.display = 'flex';
+                } else {
+                    checkbox.style.display = 'none';
+                }
+            });
+        }
+
+        // Hiển thị mô tả chi tiết về mạch
+        function showPulseDescription(pulseType) {
+            const descriptionDiv = document.getElementById('pulseDescription');
+            const pulseData = pulseDatabase[pulseType];
+            
+            if (pulseData) {
+                document.getElementById('pulseName').textContent = pulseData.name;
+                document.getElementById('pulseDetail').innerHTML = `
+                    <strong>Mô tả:</strong> ${pulseData.description}<br>
+                    <strong>Ý nghĩa:</strong> ${pulseData.meaning}
+                `;
+                descriptionDiv.classList.add('active');
+            } else {
+                descriptionDiv.classList.remove('active');
+            }
+        }
+
+        // Hiển thị mô tả chi tiết về lưỡi
+        function showTongueDescription(type, value) {
+            // Tạo hoặc cập nhật phần tử hiển thị mô tả lưỡi
+            let descriptionDiv = document.getElementById('tongueDescription');
+            if (!descriptionDiv) {
+                descriptionDiv = document.createElement('div');
+                descriptionDiv.id = 'tongueDescription';
+                descriptionDiv.className = 'pulse-description';
+                document.getElementById('tongue-tab').appendChild(descriptionDiv);
+            }
+            
+            const tongueData = tongueDatabase[type][value];
+            
+            if (tongueData) {
+                descriptionDiv.innerHTML = `
+                    <h5>${tongueData.name}</h5>
+                    <p><strong>Mô tả:</strong> ${tongueData.description}</p>
+                    <p><strong>Ý nghĩa:</strong> ${tongueData.meaning}</p>
+                    <p><strong>Chi tiết:</strong> ${tongueData.details}</p>
+                `;
+                descriptionDiv.classList.add('active');
+            } else {
+                descriptionDiv.classList.remove('active');
+            }
+        }
+
+        // Xử lý tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Xử lý form chẩn đoán
+        document.getElementById('diagnosisForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            // Vô hiệu hóa nút và hiển thị thanh tiến trình
+            submitBtn.disabled = true;
+            progressContainer.style.display = 'block';
+            
+            // Hiệu ứng loading
+            const resultElement = document.getElementById('diagnosisResult');
+            const treatmentList = document.getElementById('treatmentList');
+            const modernResultElement = document.getElementById('modernDiagnosisResult');
+            const modernTreatmentList = document.getElementById('modernTreatmentList');
+            const modernRecommendations = document.getElementById('modernRecommendations');
+            
+            resultElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang phân tích dữ liệu...';
+            treatmentList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> <span>Đang xử lý dữ liệu...</span></li>';
+            modernResultElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang phân tích dữ liệu...';
+            modernTreatmentList.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> <span>Đang xử lý dữ liệu...</span></li>';
+            modernRecommendations.innerHTML = '<li><i class="fas fa-spinner fa-spin"></i> <span>Đang xử lý dữ liệu...</span></li>';
+            
+            document.getElementById('detailedAnalysis').style.display = 'none';
+            document.getElementById('modernDetailedAnalysis').style.display = 'none';
+            
+            // Mô phỏng tiến trình
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = `${progress}%`;
+                
+                if (progress < 30) {
+                    progressText.textContent = 'Đang thu thập thông tin...';
+                } else if (progress < 60) {
+                    progressText.textContent = 'Đang phân tích triệu chứng...';
+                } else if (progress < 90) {
+                    progressText.textContent = 'Đang so sánh với cơ sở dữ liệu...';
+                } else {
+                    progressText.textContent = 'Đang hoàn thiện kết quả...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    processDiagnosis();
+                    submitBtn.disabled = false;
+                    progressContainer.style.display = 'none';
+                }
+            }, 200);
+        });
+        
+        // Xử lý chẩn đoán
+        function processDiagnosis() {
+            // Lấy dữ liệu từ form
+            const symptoms = document.getElementById('symptoms').value;
+            const pulse = document.querySelector('.pulse-type-option.selected') ? 
+                document.querySelector('.pulse-type-option.selected').getAttribute('data-value') : '';
+            const medicalHistory = document.getElementById('medicalHistory').value;
+            const symptomDuration = document.getElementById('symptomDuration').value;
+            const pulseStrength = document.getElementById('pulseStrength').value;
+            const tongueShape = document.getElementById('tongueShape').value;
+            const pulseLocation = document.getElementById('pulseLocation').value;
+            const tongueMoisture = document.getElementById('tongueMoisture').value;
+            const tongueVeins = document.getElementById('tongueVeins').value;
+            
+            // Lấy các chỉ số cận lâm sàng
+            const bloodSugar = document.getElementById('bloodSugar').value;
+            const bloodPressure = document.getElementById('bloodPressure').value;
+            const cholesterol = document.getElementById('cholesterol').value;
+            const wbc = document.getElementById('wbc').value;
+            const rbc = document.getElementById('rbc').value;
+            const platelets = document.getElementById('platelets').value;
+            const crp = document.getElementById('crp').value;
+            const ast = document.getElementById('ast').value;
+            const alt = document.getElementById('alt').value;
+            const creatinine = document.getElementById('creatinine').value;
+            const imagingResults = document.getElementById('imagingResults').value;
+            const otherTests = document.getElementById('otherTests').value;
+            
+            // Lấy các triệu chứng đã chọn
+            const selectedSymptoms = [];
+            let symptomWeight = 0;
+            document.querySelectorAll('.symptom-checkbox input:checked').forEach(checkbox => {
+                selectedSymptoms.push(checkbox.value.toLowerCase());
+                symptomWeight += parseInt(checkbox.getAttribute('data-weight'));
+            });
+            
+            // Lấy đặc điểm chất lưỡi và rêu lưỡi
+            const tongueSubstance = document.querySelector('.tongue-option[data-type="substance"].selected') ? 
+                document.querySelector('.tongue-option[data-type="substance"].selected').getAttribute('data-value') : '';
+            const tongueCoating = document.querySelector('.tongue-option[data-type="coating"].selected') ? 
+                document.querySelector('.tongue-option[data-type="coating"].selected').getAttribute('data-value') : '';
+            
+            // Lấy kết hợp mạch
+            const pulseCombination = Array.from(document.getElementById('pulseCombination').selectedOptions).map(option => option.value);
+            
+            // Kiểm tra dữ liệu đầu vào
+            if (!symptoms && selectedSymptoms.length === 0) {
+                const resultElement = document.getElementById('diagnosisResult');
+                const treatmentList = document.getElementById('treatmentList');
+                resultElement.innerHTML = '<span style="color: var(--danger)"><i class="fas fa-exclamation-triangle"></i> Vui lòng nhập mô tả triệu chứng hoặc chọn ít nhất một triệu chứng</span>';
+                treatmentList.innerHTML = '<li><i class="fas fa-exclamation-circle"></i> <span>Không thể đưa ra phương pháp điều trị khi thiếu thông tin triệu chứng</span></li>';
+                return;
+            }
+            
+            // Phân tích và chẩn đoán nâng cao
+            const diagnosis = advancedAnalysis(symptoms, selectedSymptoms, symptomWeight, tongueSubstance, tongueCoating, tongueShape, tongueMoisture, tongueVeins, pulse, pulseCombination, pulseStrength, pulseLocation, symptomDuration, medicalHistory);
+            
+            // Phân tích Y học hiện đại
+            const modernDiagnosis = modernMedicineAnalysis(symptoms, selectedSymptoms, bloodSugar, bloodPressure, cholesterol, wbc, rbc, platelets, crp, ast, alt, creatinine, imagingResults, otherTests);
+            
+            // Hiển thị kết quả Y học cổ truyền
+            document.getElementById('diagnosisResult').innerHTML = diagnosis.condition;
+            document.getElementById('confidenceValue').textContent = diagnosis.confidence + '%';
+            
+            // Hiển thị chẩn đoán phân biệt nếu có
+            if (diagnosis.differential && diagnosis.differential.length > 0) {
+                document.getElementById('differentialDiagnosis').style.display = 'block';
+                const differentialList = document.getElementById('differentialList');
+                differentialList.innerHTML = '';
+                
+                diagnosis.differential.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-arrow-right"></i> <span>${item.condition} (${item.confidence}%)</span>`;
+                    differentialList.appendChild(li);
+                });
+            } else {
+                document.getElementById('differentialDiagnosis').style.display = 'none';
+            }
+            
+            // Hiển thị phương pháp điều trị Y học cổ truyền
+            const treatmentList = document.getElementById('treatmentList');
+            treatmentList.innerHTML = '';
+            diagnosis.treatments.forEach(treatment => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-check-circle"></i> <span>${treatment}</span>`;
+                treatmentList.appendChild(li);
+            });
+            
+            // Hiển thị kết quả Y học hiện đại
+            document.getElementById('modernDiagnosisResult').innerHTML = modernDiagnosis.condition;
+            
+            // Hiển thị phương pháp điều trị Y học hiện đại
+            const modernTreatmentList = document.getElementById('modernTreatmentList');
+            modernTreatmentList.innerHTML = '';
+            modernDiagnosis.treatments.forEach(treatment => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-pills"></i> <span>${treatment}</span>`;
+                modernTreatmentList.appendChild(li);
+            });
+            
+            // Hiển thị khuyến nghị Y học hiện đại
+            const modernRecommendations = document.getElementById('modernRecommendations');
+            modernRecommendations.innerHTML = '';
+            modernDiagnosis.recommendations.forEach(recommendation => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fas fa-clipboard-list"></i> <span>${recommendation}</span>`;
+                modernRecommendations.appendChild(li);
+            });
+            
+            // Hiển thị phân tích chi tiết Y học cổ truyền
+            document.getElementById('detailedAnalysis').style.display = 'block';
+            document.getElementById('symptom-analysis').textContent = diagnosis.detailedAnalysis.symptoms;
+            document.getElementById('substance-analysis').textContent = diagnosis.detailedAnalysis.substance;
+            document.getElementById('coating-analysis').textContent = diagnosis.detailedAnalysis.coating;
+            document.getElementById('pulse-analysis').textContent = diagnosis.detailedAnalysis.pulse;
+            
+            // Hiển thị phân tích chi tiết Y học hiện đại
+            document.getElementById('modernDetailedAnalysis').style.display = 'block';
+            document.getElementById('modern-symptom-analysis').textContent = modernDiagnosis.detailedAnalysis.symptoms;
+            document.getElementById('modern-lab-analysis').textContent = modernDiagnosis.detailedAnalysis.lab;
+            document.getElementById('modern-overall-analysis').textContent = modernDiagnosis.detailedAnalysis.overall;
+            
+            // Cuộn đến kết quả
+            document.getElementById('treatmentResult').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Hàm phân tích nâng cao với cơ sở dữ liệu mở rộng
+        function advancedAnalysis(symptoms, selectedSymptoms, symptomWeight, tongueSubstance, tongueCoating, tongueShape, tongueMoisture, tongueVeins, pulse, pulseCombination, pulseStrength, pulseLocation, symptomDuration, medicalHistory) {
+            // Kết hợp triệu chứng từ textarea và checkbox
+            const allSymptoms = symptoms.toLowerCase();
+            const symptomList = [...selectedSymptoms];
+            
+            // Đánh giá mức độ nghiêm trọng
+            let severity = 1;
+            if (symptomWeight > 20) severity = 3;
+            else if (symptomWeight > 15) severity = 2;
+            
+            // So sánh với cơ sở dữ liệu bệnh lý
+            let bestMatch = null;
+            let bestScore = 0;
+            let differentialDiagnosis = [];
+            
+            conditionsDatabase.forEach(condition => {
+                let score = 0;
+                
+                // Điểm cho triệu chứng khớp
+                condition.symptoms.forEach(symptom => {
+                    if (symptomList.includes(symptom) || allSymptoms.includes(symptom)) {
+                        score += 10;
+                    }
+                });
+                
+                // Điểm cho chất lưỡi khớp
+                if (condition.tongueSubstance.includes(tongueSubstance)) {
+                    score += 15;
+                }
+                
+                // Điểm cho rêu lưỡi khớp
+                if (condition.tongueCoating.includes(tongueCoating)) {
+                    score += 10;
+                }
+                
+                // Điểm cho mạch khớp
+                if (condition.pulse.includes(pulse)) {
+                    score += 10;
+                }
+                
+                // Lưu kết quả nếu điểm cao hơn
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = condition;
+                }
+                
+                // Thêm vào chẩn đoán phân biệt nếu điểm đủ cao
+                if (score >= 20) {
+                    const confidence = Math.min(90, Math.floor(score / 60 * 100));
+                    differentialDiagnosis.push({
+                        condition: condition.name,
+                        confidence: confidence
+                    });
+                }
+            });
+            
+            // Sắp xếp chẩn đoán phân biệt theo độ tin cậy
+            differentialDiagnosis.sort((a, b) => b.confidence - a.confidence);
+            
+            let condition, treatments, confidence, detailedAnalysis;
+            
+            if (bestMatch && bestScore >= 25) {
+                condition = bestMatch.name;
+                treatments = bestMatch.treatments;
+                confidence = Math.min(95, Math.floor(bestScore / 60 * 100));
+                
+                // Điều chỉnh độ tin cậy dựa trên thông tin bổ sung
+                if (tongueSubstance && tongueCoating) confidence += 8;
+                if (pulse) confidence += 5;
+                if (symptomDuration && pulseStrength) confidence += 5;
+                if (medicalHistory) confidence += 2;
+                
+                confidence = Math.min(confidence, 95);
+                
+                // PHÂN TÍCH TRIỆU CHỨNG CHI TIẾT
+                let symptomAnalysis = '';
+                if (symptomList.length > 0) {
+                    symptomAnalysis = `Triệu chứng chính: ${symptomList.join(', ')}. `;
+                }
+                if (symptomDuration) {
+                    const durations = {
+                        '1': 'cấp tính', '2': 'bán cấp', '3': 'kéo dài', 
+                        '4': 'mãn tính', '5': 'mãn tính kéo dài'
+                    };
+                    symptomAnalysis += `Thời gian: ${durations[symptomDuration]}. `;
+                }
+                symptomAnalysis += bestMatch.analysis;
+                
+                // PHÂN TÍCH CHẤT LƯỠI
+                let substanceAnalysis = '';
+                if (tongueSubstance && tongueDatabase.substance[tongueSubstance]) {
+                    substanceAnalysis = tongueDatabase.substance[tongueSubstance].meaning;
+                }
+                
+                // PHÂN TÍCH RÊU LƯỠI
+                let coatingAnalysis = '';
+                if (tongueCoating && tongueDatabase.coating[tongueCoating]) {
+                    coatingAnalysis = tongueDatabase.coating[tongueCoating].meaning;
+                }
+                
+                // PHÂN TÍCH MẠCH
+                let pulseAnalysis = '';
+                if (pulse && pulseDatabase[pulse]) {
+                    pulseAnalysis = pulseDatabase[pulse].meaning;
+                    
+                    // Xử lý kết hợp mạch
+                    if (pulseCombination && pulseCombination.length > 0) {
+                        pulseAnalysis += ` Kết hợp với: ${pulseCombination.join(', ')}.`;
+                    }
+                    
+                    // Xử lý vị trí mạch
+                    if (pulseLocation) {
+                        const locationMap = {
+                            'thon_trai': 'rõ nhất ở bộ Thốn tay trái (Tâm - Tiểu trường)',
+                            'quan_trai': 'rõ nhất ở bộ Quan tay trái (Can - Đởm)',
+                            'xich_trai': 'rõ nhất ở bộ Xích tay trái (Thận Âm - Bàng quang)',
+                            'thon_phai': 'rõ nhất ở bộ Thốn tay phải (Phế - Đại trường)',
+                            'quan_phai': 'rõ nhất ở bộ Quan tay phải (Tỳ - Vị)',
+                            'xich_phai': 'rõ nhất ở bộ Xích tay phải (Thận Dương - Tam tiêu)',
+                            'deu_ca_hai_tay': 'đều cả hai tay'
+                        };
+                        pulseAnalysis += ` Vị trí: ${locationMap[pulseLocation]}.`;
+                    }
+                }
+                
+                detailedAnalysis = {
+                    symptoms: symptomAnalysis,
+                    substance: substanceAnalysis || 'Chưa có thông tin chất lưỡi',
+                    coating: coatingAnalysis || 'Chưa có thông tin rêu lưỡi',
+                    pulse: pulseAnalysis || 'Chưa có thông tin mạch'
+                };
+            } else {
+                condition = 'HỘI CHỨNG KẾT HỢP - Cần thăm khám trực tiếp';
+                confidence = 70;
+                differentialDiagnosis = [
+                    { condition: 'Khí trệ huyết ứ', confidence: 55 },
+                    { condition: 'Đàm thấp ngăn trở', confidence: 50 },
+                    { condition: 'Âm dương lưỡng hư', confidence: 45 }
+                ];
+                treatments = [
+                    'Đến cơ sở y tế để được thăm khám trực tiếp',
+                    'Kết hợp chẩn đoán Tây y và Đông y',
+                    'Theo dõi triệu chứng và tái khám định kỳ'
+                ];
+                
+                // PHÂN TÍCH TRIỆU CHỨNG CHI TIẾT
+                let symptomAnalysis = '';
+                if (symptomList.length > 0) {
+                    symptomAnalysis = `Triệu chứng chính: ${symptomList.join(', ')}. `;
+                }
+                if (symptomDuration) {
+                    const durations = {
+                        '1': 'cấp tính', '2': 'bán cấp', '3': 'kéo dài', 
+                        '4': 'mãn tính', '5': 'mãn tính kéo dài'
+                    };
+                    symptomAnalysis += `Thời gian: ${durations[symptomDuration]}. `;
+                }
+                symptomAnalysis += 'Triệu chứng không điển hình, cần kết hợp tứ chẩn để chẩn đoán chính xác.';
+                
+                detailedAnalysis = {
+                    symptoms: symptomAnalysis,
+                    substance: 'Chưa có thông tin chất lưỡi',
+                    coating: 'Chưa có thông tin rêu lưỡi',
+                    pulse: 'Chưa có thông tin mạch'
+                };
+            }
+            
+            return {
+                condition: condition,
+                treatments: treatments,
+                confidence: confidence,
+                differential: differentialDiagnosis,
+                detailedAnalysis: detailedAnalysis
+            };
+        }
+        
+        // Hàm phân tích Y học hiện đại
+        function modernMedicineAnalysis(symptoms, selectedSymptoms, bloodSugar, bloodPressure, cholesterol, wbc, rbc, platelets, crp, ast, alt, creatinine, imagingResults, otherTests) {
+            const allSymptoms = symptoms.toLowerCase();
+            const symptomList = [...selectedSymptoms];
+            
+            let bestMatch = null;
+            let bestScore = 0;
+            
+            modernConditionsDatabase.forEach(condition => {
+                let score = 0;
+                
+                // Điểm cho triệu chứng khớp
+                condition.symptoms.forEach(symptom => {
+                    if (symptomList.includes(symptom) || allSymptoms.includes(symptom)) {
+                        score += 10;
+                    }
+                });
+                
+                // Điểm cho chỉ số xét nghiệm khớp
+                if (condition.labFindings.bloodPressure && bloodPressure) {
+                    const bpValues = bloodPressure.split('/');
+                    if (bpValues.length === 2) {
+                        const systolic = parseInt(bpValues[0]);
+                        const diastolic = parseInt(bpValues[1]);
+                        if (systolic > 140 || diastolic > 90) {
+                            score += 15;
+                        }
+                    }
+                }
+                
+                if (condition.labFindings.bloodSugar && bloodSugar) {
+                    if (parseFloat(bloodSugar) > 126) {
+                        score += 15;
+                    }
+                }
+                
+                if (condition.labFindings.wbc && wbc) {
+                    if (parseFloat(wbc) > 11.0) {
+                        score += 10;
+                    }
+                }
+                
+                if (condition.labFindings.rbc && rbc) {
+                    if (parseFloat(rbc) < 4.2) {
+                        score += 10;
+                    }
+                }
+                
+                if (condition.labFindings.crp && crp) {
+                    if (parseFloat(crp) > 10) {
+                        score += 10;
+                    }
+                }
+                
+                // Lưu kết quả nếu điểm cao hơn
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = condition;
+                }
+            });
+            
+            let condition, treatments, recommendations, analysis, detailedAnalysis;
+            
+            if (bestMatch && bestScore >= 20) {
+                condition = bestMatch.name;
+                treatments = bestMatch.treatments;
+                recommendations = bestMatch.recommendations;
+                analysis = bestMatch.analysis;
+                
+                // PHÂN TÍCH TRIỆU CHỨNG
+                let symptomAnalysis = '';
+                if (symptomList.length > 0) {
+                    symptomAnalysis = `Triệu chứng chính: ${symptomList.join(', ')}. `;
+                }
+                symptomAnalysis += analysis;
+                
+                // PHÂN TÍCH CHỈ SỐ CẬN LÂM SÀNG
+                let labAnalysis = '';
+                const labValues = [];
+                
+                if (bloodSugar) {
+                    const sugarValue = parseFloat(bloodSugar);
+                    if (sugarValue > 126) {
+                        labValues.push(`Đường huyết cao (${bloodSugar} mg/dL)`);
+                    } else if (sugarValue < 70) {
+                        labValues.push(`Đường huyết thấp (${bloodSugar} mg/dL)`);
+                    }
+                }
+                
+                if (bloodPressure) {
+                    const bpValues = bloodPressure.split('/');
+                    if (bpValues.length === 2) {
+                        const systolic = parseInt(bpValues[0]);
+                        const diastolic = parseInt(bpValues[1]);
+                        if (systolic > 140 || diastolic > 90) {
+                            labValues.push(`Huyết áp cao (${bloodPressure} mmHg)`);
+                        }
+                    }
+                }
+                
+                if (wbc) {
+                    const wbcValue = parseFloat(wbc);
+                    if (wbcValue > 11.0) {
+                        labValues.push(`Bạch cầu tăng (${wbc} 10^9/L)`);
+                    } else if (wbcValue < 4.0) {
+                        labValues.push(`Bạch cầu giảm (${wbc} 10^9/L)`);
+                    }
+                }
+                
+                labAnalysis = labValues.length > 0 ? labValues.join(', ') : 'Các chỉ số trong giới hạn bình thường';
+                
+                // PHÂN TÍCH TỔNG QUAN
+                let overallAnalysis = analysis;
+                
+                detailedAnalysis = {
+                    symptoms: symptomAnalysis,
+                    lab: labAnalysis,
+                    overall: overallAnalysis
+                };
+            } else {
+                condition = 'CẦN THĂM KHÁM CHUYÊN SÂU';
+                treatments = [
+                    'Đến cơ sở y tế để được thăm khám trực tiếp',
+                    'Thực hiện các xét nghiệm cần thiết theo chỉ định của bác sĩ'
+                ];
+                recommendations = [
+                    'Theo dõi triệu chứng',
+                    'Tái khám khi có dấu hiệu bất thường',
+                    'Duy trì lối sống lành mạnh'
+                ];
+                analysis = 'Triệu chứng và chỉ số cận lâm sàng không đủ để xác định chẩn đoán cụ thể. Cần thăm khám trực tiếp với bác sĩ chuyên khoa.';
+                
+                detailedAnalysis = {
+                    symptoms: 'Triệu chứng không đủ đặc hiệu để xác định chẩn đoán',
+                    lab: 'Các chỉ số cận lâm sàng không đủ để xác định chẩn đoán',
+                    overall: analysis
+                };
+            }
+            
+            return {
+                condition: condition,
+                treatments: treatments,
+                recommendations: recommendations,
+                analysis: analysis,
+                detailedAnalysis: detailedAnalysis
+            };
+        }
+        
+        // Xử lý menu mobile
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+                nav.style.flexDirection = 'column';
+                nav.style.position = 'absolute';
+                nav.style.top = '100%';
+                nav.style.left = '0';
+                nav.style.right = '0';
+                nav.style.background = 'var(--primary)';
+                nav.style.padding = '1rem';
+            }
+        });
+    </script>
+</body>
+</html>
